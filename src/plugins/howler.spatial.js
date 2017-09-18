@@ -1,6 +1,6 @@
 /*!
  *  Spatial Plugin - Adds support for stereo and 3D audio where Web Audio is supported.
- *  
+ *
  *  howler.js v2.0.4
  *  howlerjs.com
  *
@@ -17,7 +17,7 @@
   // Setup default properties.
   HowlerGlobal.prototype._pos = [0, 0, 0];
   HowlerGlobal.prototype._orientation = [0, 0, -1, 0, 1, 0];
-  
+
   /** Global Methods **/
   /***************************************************************************/
 
@@ -403,7 +403,7 @@
    *                     with `inverse` and `exponential`.
    *     panningModel - ('HRTF' by default) Determines which spatialization algorithm is used to position audio.
    *                     Can be `HRTF` or `equalpower`.
-   * 
+   *
    * @return {Howl/Object} Returns self or current panner attributes.
    */
   Howl.prototype.pannerAttr = function() {
@@ -446,7 +446,7 @@
             distanceModel: typeof o.pannerAttr.distanceModel !== 'undefined' ? o.pannerAttr.distanceModel : self._distanceModel,
             maxDistance: typeof o.pannerAttr.maxDistance !== 'undefined' ? o.pannerAttr.maxDistance : self._maxDistance,
             refDistance: typeof o.pannerAttr.refDistance !== 'undefined' ? o.pannerAttr.refDistance : self._refDistance,
-            rolloffFactor: typeof o.pannerAttr.rolloffFactor !== 'undefined' ? o.pannerAttr.rolloffFactor : self._rolloffFactor
+            rolloffFactor: typeof o.pannerAttr.rolloffFactor !== 'undefined' ? o.pannerAttr.rolloffFactor : self._rolloffFactor,
             panningModel: typeof o.pannerAttr.panningModel !== 'undefined' ? o.pannerAttr.panningModel : self._panningModel,
           };
         }
@@ -475,7 +475,7 @@
           distanceModel: typeof o.distanceModel !== 'undefined' ? o.distanceModel : pa.distanceModel,
           maxDistance: typeof o.maxDistance !== 'undefined' ? o.maxDistance : pa.maxDistance,
           refDistance: typeof o.refDistance !== 'undefined' ? o.refDistance : pa.refDistance,
-          rolloffFactor: typeof o.rolloffFactor !== 'undefined' ? o.rolloffFactor : pa.rolloffFactor
+          rolloffFactor: typeof o.rolloffFactor !== 'undefined' ? o.rolloffFactor : pa.rolloffFactor,
           panningModel: typeof o.panningModel !== 'undefined' ? o.panningModel : pa.panningModel,
         };
 
