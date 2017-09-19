@@ -705,8 +705,6 @@
       var timeout = (duration * 1000) / Math.abs(sound._rate);
 
       // Update the parameters of the sound
-      sound._paused = false;
-      sound._ended = false;
       sound._sprite = sprite;
       sound._seek = seek;
       sound._start = self._sprite[sprite][0] / 1000;
@@ -724,6 +722,10 @@
           var vol = (sound._muted || self._muted) ? 0 : sound._volume;
           node.gain.setValueAtTime(vol, Howler.ctx.currentTime);
           sound._playStart = Howler.ctx.currentTime;
+
+          // Don't turn off paused until we are actually playing the sound.
+          sound._paused = false;
+          sound._ended = false;
 
           // Play the sound using the supported method.
           if (typeof node.bufferSource.start === 'undefined') {
@@ -763,6 +765,10 @@
           // Mobile browsers will throw an error if this is called without user interaction.
           try {
             node.play();
+
+            // Don't turn off paused until we are actually playing the sound.
+            sound._paused = false;
+            sound._ended = false;
 
             // If the node is still paused, then we can assume there was a playback issue.
             if (node.paused) {
@@ -840,7 +846,6 @@
           // Reset the seek position.
           sound._seek = self.seek(ids[i]);
           sound._rateSeek = 0;
-          sound._paused = true;
 
           // Stop currently running fades.
           self._stopFade(ids[i]);
@@ -852,6 +857,9 @@
                 continue;
               }
 
+              // Don't set audio to paused until we have actually paused the audio.
+              sound._paused = true;
+
               if (typeof sound._node.bufferSource.stop === 'undefined') {
                 sound._node.bufferSource.noteOff(0);
               } else {
@@ -861,6 +869,9 @@
               // Clean up the buffer source.
               self._cleanBuffer(sound._node);
             } else if (!isNaN(sound._node.duration) || sound._node.duration === Infinity) {
+              // Don't set audio to paused until we have actually paused the audio.
+              sound._paused = true;
+              
               sound._node.pause();
             }
           }
@@ -910,8 +921,6 @@
           // Reset the seek position.
           sound._seek = sound._start || 0;
           sound._rateSeek = 0;
-          sound._paused = true;
-          sound._ended = true;
 
           // Stop currently running fades.
           self._stopFade(ids[i]);
@@ -920,6 +929,10 @@
             if (self._webAudio) {
               // Make sure the sound's AudioBufferSourceNode has been created.
               if (sound._node.bufferSource) {
+                // Don't stop the audio until we have actually stopped the audio.
+                sound._paused = true;
+                sound._ended = true;
+
                 if (typeof sound._node.bufferSource.stop === 'undefined') {
                   sound._node.bufferSource.noteOff(0);
                 } else {
@@ -930,6 +943,10 @@
                 self._cleanBuffer(sound._node);
               }
             } else if (!isNaN(sound._node.duration) || sound._node.duration === Infinity) {
+              // Don't stop the audio until we have actually stopped the audio.
+              sound._paused = true;
+              sound._ended = true;
+
               sound._node.currentTime = sound._start || 0;
               sound._node.pause();
             }
